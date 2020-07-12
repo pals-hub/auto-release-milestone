@@ -21,3 +21,4 @@ exit 0
 #Windows
 #git add --chmod=+x -- entrypoint.sh
 #git commit
+#git push origin master
