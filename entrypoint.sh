@@ -15,4 +15,9 @@ echo "::set-output name=release-url::http://example.com"
 exit 0
 
 #mark this file as executable by adding a +x bit to the file by running the following before submitting this script to GitHub
+#Linux or Mac
 #chmod +x entrypoint.sh
+
+#Windows
+#git add --chmod=+x -- entrypoint.sh
+#git commit
