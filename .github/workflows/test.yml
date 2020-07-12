@@ -1,0 +1,21 @@
+name: Test
+on:
+  push:
+    branches:
+      - master
+  create:
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the sources
+        uses: actions/checkout@v2
+      - name: Create a release milestone
+        id: create-release-milestone
+        uses: ./
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Print the URL of the release milestone
+        if: steps.create-release-milestone.outputs.release-url != ''
+        run: echo ${{ steps.create-release-milestone.outputs.release-url }}

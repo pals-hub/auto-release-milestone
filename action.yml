@@ -1,0 +1,9 @@
+name: Auto Release Milestone
+description: Drafts a GitHub release based on a newly closed milestone
+author: Prabhat Pal
+outputs:
+  release-url:
+    description: The URL if the GitHub release
+runs:
+  using: docker
+  image: Dockerfile
