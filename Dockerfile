@@ -16,7 +16,7 @@ LABEL maintainer="Prabhat Pal"
 #copy the script file from host file system to the virtual file system of the container
 #specify the path to entrypoint.sh relative to the Dockerfile
 #copy destination is the root of the virtual file system, which in UNIX is /
-COPY entrypoint.sh /
+COPY entrypoint.sh /entrypoint.sh
 
 #use the keyword, ENTRYPOINT to specify the command to run on startup
 #specify an array of strings as args
