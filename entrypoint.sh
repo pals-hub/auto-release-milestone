@@ -18,10 +18,10 @@ repo_token=$1
         #We could use jq to read the event name from this JSON.
     #However, we can also read a convenient variable $GITHUB_EVENT_NAME to get the event name.
 #For curiousity's sake, I want to see the entire JSON
-echo "::debug::$(jq . ${GITHUB_EVENT_PATH})"
+#echo "::debug::$(jq . ${GITHUB_EVENT_PATH})"
 
 if [ "${GITHUB_EVENT_NAME}" != "milestone" ]; then
-    echo "::debug::The event name was '${GITHUB_EVENT_NAME}'"
+    echo "::debug::The event name was ${GITHUB_EVENT_NAME}"
         #The echo logging command  executes only when debug logging is enabled
             #Otherwise, script exits with 0
     exit 0
@@ -59,7 +59,8 @@ fi
 
 #Read the 'action' field, and write an if [];then ... fi statement 
     #and print a debug message if the action is not "closed", and then exit immediately
-event_type=$(jq --raw-output ."action" $GITHUB_EVENT_PATH) #no space between var_name=val_value
+    #no space between var_name=val_value
+event_type=$(jq --raw-output ."action" $GITHUB_EVENT_PATH)
 if [ event_type != "closed" ]; then
     echo "::debug::The event type is '$event_type'"
 fi
