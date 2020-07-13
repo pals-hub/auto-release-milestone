@@ -68,6 +68,7 @@ fi
 #At this point, the event name milestone is confirmed, and we know that the action type was "created"
     #So read the milestone name into a variable.
 milestone_name=$(jq --raw-output ."milestone"."title" $GITHUB_EVENT_PATH)
+echo "::debug::Milestone name is ${milestone_name}"
 
 #Internal Field Separator (IFS) can separate out the contents of a string with a particular separator.
     #The bash man page says (https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html)
@@ -93,6 +94,7 @@ IFS='/' read owner repository <<< ${GITHUB_REPOSITORY}
 echo "::debug::The repo-owner is ${owner}"
 echo "::debug::The repository is ${repository}"
 
+#ReleaseManager Create Release https://gittools.github.io/GitReleaseManager/docs/commands/create
 release_url=$(dotnet gitreleasemanager create \
 --milestone ${milestone_name} \
 --targetcommitish ${GITHUB_SHA} \
@@ -100,7 +102,7 @@ release_url=$(dotnet gitreleasemanager create \
 --owner ${owner} \
 --repository ${repository})
 
-echo "::debug::${release_url}"
+echo "::debug::Release URL is ${release_url}"
 #There are many moving parts here. Many calls are internally being made over the network using the GitHub REST API.
     #Authentication requests are being made. Networks can fail, authentication can be false etc. Eventually, the 
     #code is bound to see a scenario where an error occurs. Handle catch all errors here.
