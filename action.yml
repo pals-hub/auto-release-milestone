@@ -34,4 +34,4 @@ runs:
   using: docker                       #using: (Required) You must set this value to 'docker'
   image: Dockerfile                   #image: (Required) Define your Docker container in the file named ./Dockerfile in your repo
   args:
-    - ${{ inputs.repo-token }}
+    - ${{ inputs.repo-token }}        #runs.args: (Optional) Pass the inputs.repo-token as the first arg $1 to entrypoint.sh 
