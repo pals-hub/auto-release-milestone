@@ -1,9 +1,37 @@
+#Documentation for metadata syntax for GitHub Actions https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions
+
+#name: (Required) The name of your action. GitHub displays the name in the Actions tab to help visually identify actions in each job.
 name: Auto Release Milestone
+
+#description: (Required) A short description of the action.
 description: Drafts a GitHub release based on a newly closed milestone
+
+#author: (Optional) The name of the action's author.
 author: Prabhat Pal
+
+#inputs
+inputs:
+  repo-token:
+    description: The GITHUB_TOKEN used to authenticate access to the repository in which this action is used
+    required: true
+
+#outputs: (Optional) Output parameters allow you to declare data that an action sets. 
+#Actions that run later in a workflow can use the output data set in previously run actions. 
+#For example, if you had an action that performed the addition of two inputs (x + y = z),
+#the action could output the sum (z) for other actions to use as an input.
+
+#Even if you don't declare an output in your action metadata file, 
+#you can still set outputs and use them in a workflow. 
+#See https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions#setting-an-output-parameter
 outputs:
   release-url:
-    description: The URL if the GitHub release
+    description: The URL if the release milestone
+
+#runs (Docker actions): (Required) Configures the image used for the Docker action
+#alternate way to set image is below
+#image: docker://debian:stetch-slim  #image: (Required) Alternately, use a public Docker registry container
 runs:
-  using: docker
-  image: Dockerfile
+  using: docker                       #using: (Required) You must set this value to 'docker'
+  image: Dockerfile                   #image: (Required) Define your Docker container in the file named ./Dockerfile in your repo
+  args:
+    - ${{ inputs.repo-token }}
