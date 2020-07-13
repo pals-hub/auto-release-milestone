@@ -21,7 +21,7 @@ repo_token=$1
 #echo "::debug::$(jq . ${GITHUB_EVENT_PATH})"
 
 if [ "${GITHUB_EVENT_NAME}" != "milestone" ]; then
-    echo "::debug::The event name was ${GITHUB_EVENT_NAME}"
+    echo "::debug::The event name was '${GITHUB_EVENT_NAME}'"
         #The echo logging command  executes only when debug logging is enabled
             #Otherwise, script exits with 0
     exit 0
@@ -88,14 +88,17 @@ milestone_name=$(jq --raw-output ."milestone"."title" $GITHUB_EVENT_PATH)
 #The <<< is called the Here-string redirection operator. This is used to redirect the read command  
     #to read from a string instead of the typical stdin and assign values into owner and repository variables
 #The env variable $GITHUB_REPOSITORY is a string of the form "owner/repository"
-IFS='/' read owner repository <<< '${GITHUB_REPOSITORY}'
+IFS='/' read owner repository <<< ${GITHUB_REPOSITORY}
+
+echo "::debug::${owner}"
+echo "::debug::${repository}"
 
 release_url=$(dotnet gitreleasemanager create \
---milestone $milestone_name \
---targetcommitish $GITHUB_SHA \
---token $repo_token \
---owner $owner \
---repository $repository)
+--milestone ${milestone_name} \
+--targetcommitish ${GITHUB_SHA} \
+--token ${repo_token} \
+--owner ${owner} \
+--repository ${repository})
 
 #There are many moving parts here. Many calls are internally being made over the network using the GitHub REST API.
     #Authentication requests are being made. Networks can fail, authentication can be false etc. Eventually, the 
