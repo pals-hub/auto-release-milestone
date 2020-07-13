@@ -90,8 +90,8 @@ milestone_name=$(jq --raw-output ."milestone"."title" $GITHUB_EVENT_PATH)
 #The env variable $GITHUB_REPOSITORY is a string of the form "owner/repository"
 IFS='/' read owner repository <<< ${GITHUB_REPOSITORY}
 
-echo "::debug::${owner}"
-echo "::debug::${repository}"
+echo "::debug::The repo-owner is ${owner}"
+echo "::debug::The repository is ${repository}"
 
 release_url=$(dotnet gitreleasemanager create \
 --milestone ${milestone_name} \
@@ -100,6 +100,7 @@ release_url=$(dotnet gitreleasemanager create \
 --owner ${owner} \
 --repository ${repository})
 
+echo "::debug::${release_url}"
 #There are many moving parts here. Many calls are internally being made over the network using the GitHub REST API.
     #Authentication requests are being made. Networks can fail, authentication can be false etc. Eventually, the 
     #code is bound to see a scenario where an error occurs. Handle catch all errors here.
