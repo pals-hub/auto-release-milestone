@@ -17,10 +17,8 @@ repo_token=$1
     #The full name of the JSON file with all info about action is $GITHUB_EVENT_PATH
         #We could use jq to read the event name from this JSON.
     #However, we can also read a convenient variable $GITHUB_EVENT_NAME to get the event name.
-
-echo "::debug::`${GITHUB_EVENT_NAME}`"
 #For curiousity's sake, I want to see the entire JSON
-#echo "::debug::$(jq . ${GITHUB_EVENT_PATH})"
+echo "::debug::$(jq . ${GITHUB_EVENT_PATH})"
 
 if [ "${GITHUB_EVENT_NAME}" != "milestone" ]; then
     echo "::debug::The event name was '${GITHUB_EVENT_NAME}'"
@@ -63,7 +61,7 @@ fi
     #and print a debug message if the action is not "closed", and then exit immediately
 event_type=$(jq --raw-output ."action" $GITHUB_EVENT_PATH) #no space between var_name=val_value
 if [ event_type != "closed" ]; then
-    echo "::debug::The event type is $event_type"
+    echo "::debug::The event type is '$event_type'"
 fi
 
 #At this point, the event name milestone is confirmed, and we know that the action type was "created"
@@ -89,7 +87,7 @@ milestone_name=$(jq --raw-output ."milestone"."title" $GITHUB_EVENT_PATH)
 #The <<< is called the Here-string redirection operator. This is used to redirect the read command  
     #to read from a string instead of the typical stdin and assign values into owner and repository variables
 #The env variable $GITHUB_REPOSITORY is a string of the form "owner/repository"
-IFS='/' read owner repository <<< `$GITHUB_REPOSITORY`
+IFS='/' read owner repository <<< '${GITHUB_REPOSITORY}'
 
 release_url=$(dotnet gitreleasemanager create \
 --milestone $milestone_name \
